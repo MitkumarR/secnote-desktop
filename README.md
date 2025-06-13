@@ -19,4 +19,4 @@
 
 ---
 
-Would you like me to generate these files (`requirements.txt`, `.gitignore`, `run.sh`, `run.bat`) for your specific PyQt5 encryption app based on your code?
+
