@@ -1,46 +1,14 @@
 import sys
 import os
 
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QTextEdit, QAction, QFileDialog,
-    QMessageBox, QMenu, QMenuBar, QPushButton, QLabel, QVBoxLayout, QDialog
+    QApplication, QMainWindow, QTextEdit, QAction, QFileDialog, QMessageBox
 )
 from PyQt5.QtGui import QIcon, QKeySequence
+from gui.about_dialog import AboutDialog
+from gui.crypto_box import EncryptionBox
 
-class AboutDialog(QDialog):
-    def __init__(self):
-        super().__init__()
-        self.setWindowTitle("About Secnote")
-        self.setFixedSize(400, 250)
-        self.setWindowModality(Qt.ApplicationModal)
 
-        layout = QVBoxLayout()
-
-        about_text = (
-            "<h3>Secnote</h3>"
-            "<p>A lightweight and secure desktop note editor built using Python and PyQt5.</p>"
-            "<b>Features:</b><br>"
-            "- Simple and clean UI<br>"
-            "- File encryption/decryption<br>"
-            "- Custom key management<br>"
-            "- Keyboard shortcuts<br>"
-            "- Local storage security<br><br>"
-            "<i>Developed by: Mit projects</i>"
-        )
-
-        label = QLabel(about_text)
-        label.setWordWrap(True)
-        label.setTextFormat(Qt.RichText)
-        layout.addWidget(label)
-
-        close_btn = QPushButton("Close")
-        close_btn.clicked.connect(self.close)
-        layout.addWidget(close_btn, alignment=Qt.AlignRight)
-
-        self.setLayout(layout)
-        
-        
 class Secnote(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -114,7 +82,6 @@ class Secnote(QMainWindow):
         if path:
             try:
                 with open(path, 'r') as file:
-                    
                     self.textEdit.setText(file.read())
                 self.file = path
                 self.setWindowTitle(os.path.basename(self.file) + " - Secnote")
@@ -139,7 +106,9 @@ class Secnote(QMainWindow):
             self.setWindowTitle(os.path.basename(self.file) + " - Secnote")
 
     def encrypt(self):
-        QMessageBox.information(self, "Success", "File Encrypted")
+
+        encryption_box = EncryptionBox(self.file)
+        encryption_box.exec_()
 
     def decrypt(self):
         QMessageBox.information(self, "Success", "File Decrypted")
