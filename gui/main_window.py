@@ -2,11 +2,11 @@ import sys
 import os
 
 from PyQt5.QtWidgets import (
-    QApplication, QMainWindow, QTextEdit, QAction, QFileDialog, QMessageBox
+    QApplication, QMainWindow, QTextEdit, QAction, QFileDialog, QMessageBox, QDialog
 )
 from PyQt5.QtGui import QIcon, QKeySequence
 from gui.about_dialog import AboutDialog
-from gui.crypto_box import EncryptionBox
+from gui.crypto_box import EncryptionBox, DecryptionBox
 
 
 class Secnote(QMainWindow):
@@ -78,13 +78,30 @@ class Secnote(QMainWindow):
         self.setWindowTitle("Untitled - Secnote")
 
     def open_file(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Open File", "", "Text Files (*.txt);;All Files (*)")
+        path, _ = QFileDialog.getOpenFileName(
+            self,
+            "Open File",
+            "",
+            "Text or Encrypted Files (*.txt *.enc);;All Files (*)"
+        )
+
         if path:
             try:
-                with open(path, 'r') as file:
-                    self.textEdit.setText(file.read())
+                # Read file in appropriate mode
+                if path.endswith(".enc"):
+                    with open(path, 'rb') as file:
+                        raw_data = file.read()
+                        # Display raw encrypted content as hex or plain binary (read-only)
+                        self.textEdit.setPlainText(raw_data.hex())  # or just: str(raw_data)
+                        self.textEdit.setReadOnly(True)
+                else:
+                    with open(path, 'r') as file:
+                        self.textEdit.setPlainText(file.read())
+                        self.textEdit.setReadOnly(False)
+
                 self.file = path
                 self.setWindowTitle(os.path.basename(self.file) + " - Secnote")
+
             except Exception as e:
                 QMessageBox.warning(self, "Error", f"Could not open file: {e}")
 
@@ -106,12 +123,36 @@ class Secnote(QMainWindow):
             self.setWindowTitle(os.path.basename(self.file) + " - Secnote")
 
     def encrypt(self):
+        try:
+            encryption_box = EncryptionBox(self.file)
+            result = encryption_box.exec_()  # Shows the dialog, blocks until it's done
 
-        encryption_box = EncryptionBox(self.file)
-        encryption_box.exec_()
+            if result == QDialog.Accepted:
+                # Encryption was successful, show message and close main window
+                QMessageBox.information(self, "Success", "File Encrypted")
+                self.close()
+            else:
+                # Dialog was canceled or failed
+                pass
+
+        except ValueError:
+            pass
 
     def decrypt(self):
-        QMessageBox.information(self, "Success", "File Decrypted")
+        try:
+            decryption_box = DecryptionBox(self.file)
+            result = decryption_box.exec_()  # Shows the dialog, blocks until it's done
+
+            if result == QDialog.Accepted:
+                # Encryption was successful, show message and close main window
+                QMessageBox.information(self, "Success", "File Decrypted")
+                self.close()
+            else:
+                # Dialog was canceled or failed
+                pass
+
+        except ValueError:
+            pass
 
     def reset_key(self):
         QMessageBox.information(self, "Success", "Key has been reset")
