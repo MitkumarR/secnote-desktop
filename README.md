@@ -1,129 +1,142 @@
 
-> Clone and run with:
->
-> **Windows:**
->
-> ```bash
-> git clone https://github.com/yourname/file-encryptor.git
-> cd file-encryptor
-> run.bat
-> ```
->
-> **Linux/macOS:**
->
-> ```bash
-> git clone https://github.com/yourname/file-encryptor.git
-> cd file-encryptor
-> ./run.sh
-> ```
+# secNOTE - Secure File Encryption Desktop App
 
-Sure, here's a complete guide to using **Qt Designer** with **PyQt5** in a drag-and-drop fashion, along with how to convert `.ui` files to Python `.py` files using `pyuic5`.
+**secNOTE** is a privacy-first, desktop application built with Python and PyQt5 to help you securely create, encrypt, decrypt, and manage your text files. It uses AES symmetric encryption via `cryptography.fernet` to protect your sensitive content, with a clean and simple user interface for a smooth experience.
 
 ---
 
-## 🛠 What is Qt Designer?
+## 📦 Features (Implemented)
 
-**Qt Designer** is a GUI design tool that comes with PyQt5. It allows you to **visually design GUIs** and save them as `.ui` files (XML format). You then convert that `.ui` file into a `.py` file using `pyuic5`.
+### 🔐 Security
+- AES-based encryption/decryption using `cryptography` (Fernet).
+- Automatic extension change `.txt ➝ .enc` and vice versa.
+- Secure file overwrite to prevent data recovery.
+- File permission locking after encryption to prevent unauthorized modification or deletion.
+- Decryption allowed only for `.enc` files.
+- Clipboard-safe key generation and copy support.
+- Error handling for incorrect keys or unsupported file types.
+
+### 📁 File Handling
+- Open `.txt` or `.enc` files directly.
+- Text area for viewing and editing (with appropriate modes).
+- Files are securely updated with the same name (extension changed).
+- Key generation, key copy, and encryption done in dialog windows.
+
+### 💻 GUI with PyQt5
+- Minimal, user-friendly UI built using Qt.
+- Menu bar for file and action management.
+- Dialog windows for focused encryption and decryption flows.
+- Modular UI code with proper layout and geometry.
 
 ---
 
-## ✅ Step-by-Step Guide
+## 🚀 Getting Started
 
-### 1. 📦 Install Required Tools
+### 🧰 Prerequisites
+- Python 3.8+
+- Install required libraries:
+  ```bash
+  pip install PyQt5 cryptography
 
-If you haven't already:
+
+### ▶️ Clone and Run
+
+**Windows:**
 
 ```bash
-pip install PyQt5 pyqt5-tools
+git clone https://github.com/yourname/file-encryptor.git
+cd file-encryptor
+run.bat
 ```
 
----
-
-### 2. 🧱 Open Qt Designer
-
-#### Method 1: Using `pyqt5-tools`
+**Linux/macOS:**
 
 ```bash
-python -m pyqt5_tools.designer
+git clone https://github.com/yourname/file-encryptor.git
+cd file-encryptor
+./run.sh
 ```
 
-#### Method 2: Direct Path (if installed globally)
 
-If installed in environment:
+<!--
+## 🔮 Planned Features / Future Enhancements
 
-```bash
-path/to/your/env/Lib/site-packages/qt5_applications/Qt/bin/designer.exe
+### 🔐 Security-Oriented
+
+* [ ] **Password-based Key Generation**
+  Derive key from a password using PBKDF2. Users don’t need to store raw keys.
+
+* [ ] **Auto-Lock After Inactivity**
+  Auto-lock or encrypt files after a period of inactivity.
+
+* [ ] **Master Password for App Access**
+  App entry locked behind a secure master password (bcrypt).
+
+* [ ] **Clipboard Timeout**
+  Automatically clear keys from clipboard after N seconds.
+
+---
+
+### 📁 Workflow Improvements
+
+* [ ] **History Panel**
+  Log of encrypted/decrypted files with timestamps.
+
+* [ ] **Drag-and-Drop Support**
+  Users can drag `.txt` or `.enc` files into the app to open them.
+
+* [ ] **Batch Encryption/Decryption**
+  Multi-file selection and bulk processing.
+
+* [ ] **Encrypted Notes Viewer**
+  Read-only preview of encrypted (raw) data before decryption.
+
+---
+
+### 💻 UI/UX Enhancements
+
+* [ ] **Dark Mode Support**
+* [ ] **System Tray Integration**
+* [ ] **Visual Loading Feedback**
+* [ ] **Quick Actions from Tray**
+
+---
+
+### ☁️ Advanced Ideas (Optional)
+
+* [ ] **Cloud Sync Integration** (Google Drive / Dropbox)
+* [ ] **QR Code Key Sharing**
+* [ ] **Digital Signature Verification**
+* [ ] **Self-Destruct After Failed Attempts**
+
+---
+
+## 📁 Folder Structure
+
+```
+Secnote/
+│
+├── gui/                  # Main window, Encrypt/Decrypt dialogs
+├── core/                 # Key utilities, file operations
+├── scripts/              # .bat and .sh scripts for file locking
+├── run.sh                # Linux/macOS runner
+├── run.bat               # Windows runner
+├── main.py               # App entry point
+└── README.md
 ```
 
-Just double-click `designer.exe`.
+---
+
+## 👨‍💻 Author
+
+Developed by **Mit (aka Mice)**
+Computer Science Student | Enthusiast in Security, Python & Systems
 
 ---
 
-### 3. 🎨 Design Your UI
+## 🛡️ License
 
-* Drag components like `QPushButton`, `QLabel`, `QTextEdit`, etc.
-* Save the file as `my_ui.ui` (or any name).
-
----
-
-### 4. 🔁 Convert `.ui` to `.py` using `pyuic5`
-
-Run this command in your terminal:
-
-```bash
-pyuic5 -x my_ui.ui -o my_ui.py
-```
-
-**Explanation:**
-
-* `-x`: Makes the output Python file runnable directly (adds main check).
-* `my_ui.ui`: Input file.
-* `-o my_ui.py`: Output file.
-
----
-
-### 5. 👨‍💻 Use the Converted File in Your Python Code
-
-After conversion, `my_ui.py` will contain a class (usually `Ui_MainWindow` or similar).
-
-#### Example:
-
-If the `.ui` file had a `QMainWindow`, you’d use:
-
-```python
-from PyQt5.QtWidgets import QApplication, QMainWindow
-from my_ui import Ui_MainWindow  # This was generated
-
-class MainApp(QMainWindow):
-    def __init__(self):
-        super().__init__()
-        self.ui = Ui_MainWindow()
-        self.ui.setupUi(self)
-
-        # Now you can access elements like
-        self.ui.pushButton.clicked.connect(self.say_hello)
-
-    def say_hello(self):
-        print("Hello clicked")
-
-if __name__ == "__main__":
-    import sys
-    app = QApplication(sys.argv)
-    window = MainApp()
-    window.show()
-    sys.exit(app.exec_())
-```
-
----
-
-## 🧪 Bonus Tips
-
-* You can edit `.ui` again and re-convert it.
-* Use consistent naming in Designer (e.g., `pushButton`, `lineEdit`).
-* Keep `.ui` in a separate `ui/` folder to organize large projects.
-
----
-
-Let me know if you want a **sample UI file** or help integrating it into your existing project like `Secnote`.
+MIT License. See the [LICENSE](LICENSE) file.
 
 
+-->
