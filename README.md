@@ -3,8 +3,6 @@
 
 **secNOTE** is a privacy-first, desktop application built with Python and PyQt5 to help you securely create, encrypt, decrypt, and manage your text files. It uses AES symmetric encryption via `cryptography.fernet` to protect your sensitive content, with a clean and simple user interface for a smooth experience.
 
----
-
 ## 📦 Features (Implemented)
 
 ### 🔐 Security
@@ -28,34 +26,25 @@
 - Dialog windows for focused encryption and decryption flows.
 - Modular UI code with proper layout and geometry.
 
----
-
 ## 🚀 Getting Started
 
 ### 🧰 Prerequisites
 - Python 3.8+
 - Install required libraries:
-  ```bash
-  pip install PyQt5 cryptography
 
+```bash
+  pip install PyQt5 cryptography
+```
 
 ### ▶️ Clone and Run
 
-**Windows:**
-
 ```bash
-git clone https://github.com/yourname/file-encryptor.git
-cd file-encryptor
-run.bat
+git clone https://github.com/MitkumarR/secnote-desktop.git
+cd <project_name>
 ```
+**Windows:** ``` run.bat```
 
-**Linux/macOS:**
-
-```bash
-git clone https://github.com/yourname/file-encryptor.git
-cd file-encryptor
-./run.sh
-```
+**Linux/macOS:** ```./run.sh ```
 
 
 <!--
